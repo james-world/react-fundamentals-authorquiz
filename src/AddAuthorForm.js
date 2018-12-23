@@ -6,10 +6,15 @@ class AuthorForm extends React.Component {
         super(props)
         this.state = {
             name: '',
-            imageUrl: ''
+            imageUrl: '',
+            books: [],
+            bookTemp: ''
         };
         this.onFieldChange = this.onFieldChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleAddBook = this.handleAddBook.bind(this);
+        this.handleBookKeyPress = this.handleBookKeyPress.bind(this);
+        this.addBook = this.addBook.bind(this);
     }
 
     handleSubmit(event) {
@@ -23,6 +28,24 @@ class AuthorForm extends React.Component {
         });
     }
 
+    handleAddBook(event) {
+        this.addBook();
+    }
+
+    addBook() {
+        this.setState({
+            books: this.state.books.concat([this.state.bookTemp]),
+            bookTemp: ''
+        });
+    }
+
+    handleBookKeyPress(event) {
+        if(event.key === 'Enter') {
+            event.preventDefault();
+            this.addBook();
+        }
+    }
+
     render() {
         return <form onSubmit={this.handleSubmit}>
             <div className="AddAuthorForm__input">
@@ -32,6 +55,12 @@ class AuthorForm extends React.Component {
             <div className="AddAuthorForm__input">
                 <label htmlFor="imageUrl">Image URL</label>
                 <input type="text" name="imageUrl" value={this.state.imageUrl} onChange={this.onFieldChange}></input>
+            </div>
+            <div className="AddAuthorForm__input">
+                <label htmlFor="bookTemp">Books</label>
+                {this.state.books.map((book) => <p key={book}>{book}</p>)}
+                <input type="text" name="bookTemp" value={this.state.bookTemp} onChange={this.onFieldChange} onKeyPress={this.handleBookKeyPress}></input>
+                <input type="button" value="+" onClick={this.handleAddBook}></input>
             </div>
             <input type="submit" value="Add" />
         </form>;
