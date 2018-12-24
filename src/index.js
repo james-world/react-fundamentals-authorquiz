@@ -86,7 +86,9 @@ function reducer(
     }
 }
 
-let store = Redux.createStore(reducer);
+let store = Redux.createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(<BrowserRouter>
   <ReactRedux.Provider store={store}>
